@@ -21,42 +21,99 @@ import './style.css';
 //         }
 //       });
 //   };
+// class OpenOfficeComponent extends React.Component{
+//   constructor(props){
+//     super(props);
+//     this.state={openoffices:[]};
+//   };
 
-//   componentDidMount() {
-//     this.Search("");
-//   }
+// componentDidMount(){
+//   // this.Search();
+//   Search = (query) => {
+//     fetch(`http://localhost:8080/openofficeapi/search`)
+//       .then(res => res.json())
+//       .then(results => {
+//         this.setState({openoffices:results
+//         });
+//       })
+//       .catch(error => {
+//         console.log('Error fetching and parsing data', error);
+//       });
+//   };
+// };
+
+// Search = (query) => {
+//   fetch(`http://localhost:8080/openofficeapi/search`)
+//     .then(res => res.json())
+//     .then(results => {
+//       this.setState({openoffices:results
+//       });
+//     })
+//     .catch(error => {
+//       console.log('Error fetching and parsing data', error);
+//     });
+// }
+
+
+
 
 const List = (props) => {
   const [showResults, setShowResults] = React.useState(false)
   const show = () => setShowResults(true)
-    const handleSearch = (event) =>{
-    }
+  const [searchTerm, setSearch]= React.useState('');
+  // const [Filterdata, setFilter] = useState([]);
+  // const [searchTerm, setSearch] = useState([]);
+
+
+  const handleSearch = (event) =>{
+    setSearch(event.target.value);
+  }
+//   const handleSearch = (event) =>{
+//       // setSearch(event.target.value);
+//      const searchTerm = event.target.value;
+//      setSearch(searchTerm); 
+//      const newFilter = repos.filter((repo)=>{
+//         return repo.building.includes(searchTerm.toLowerCase());
+//       });
+    
+//     if (searchTerm === ""){
+//       setFilter([]);
+//     }else {
+//       setFilter(newFilter)
+//     }
+//     };
+// const clearInput = () => {
+//   setFilter([]);
+// }
+
+
   const { repos } = props;
   console.log(JSON.stringify(repos));
   if (!repos || repos.length === 0) return <p>No repos, sorry</p>;
+  // render()
   return (
   
     <ul>
       <h2 className='list-head'>Search for an Open Office...</h2>
       <div>
       <label>Location: </label>
-      <input type="text" onChange={(event) =>handleSearch(event)} />
+      <input type="text" onChange={handleSearch} />
       </div>
       <div>
       <label>Building: </label>
-      <input type="text" onChange={(event) =>handleSearch(event)} />
+      <input type="text" onChange={handleSearch} />
       </div>
       <div>
       <label>Floor: </label>
-      <input type="text" onChange={(event) =>handleSearch(event)} />
+      <input type="text" onChange={handleSearch} />
       </div>
       <div>
       <label>Date: </label>
-      <input type="datetime-local" onChange={(event) =>handleSearch(event)} />
+      <input type="datetime-local" onChange={handleSearch} />
       </div>
-      <button type= "submit" formmethod = "GET" formaction=""> FindAll </button>
+      <button type= "submit" formmethod = "GET" formaction="" onClick={show}> FindAll </button>
      {/* <button> { showResults ? <Results /> : null }</button> */}
-     <div class="results" onClick={show}>
+     <div class="results">
 <table responsive striped> 
         <thead>
           <tr>
@@ -68,7 +125,13 @@ const List = (props) => {
           </tr>
         </thead>
         <tbody>
-      {repos.map((repo) => {
+          {/* /* {repos.map((repo)=>{ return( */}
+       {repos.filter((repo) => {
+        if (searchTerm === ""){
+          return repo;
+        }else if (repo.location.toLowerCase().includes(searchTerm.toLowerCase())||repo.building.toLowerCase().includes(searchTerm.toLowerCase())||repo.floor.toLowerCase().includes(searchTerm.toLowerCase())){
+              return repo.location || repo.building||repo.floor;}
+        }).map((repo) => {
         return (
     <tr>
       <td> {repo.location}</td>

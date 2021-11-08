@@ -4,7 +4,7 @@ import List from './components/List';
 import withListLoading from './components/withListLoading';
 import Search from './components/Search/Search';
 function App() {
-  const ListLoading = withListLoading(List);
+  // const ListLoading = withListLoading(List);
   const SearchLoading = withListLoading(Search);
 
   const [appState, setAppState] = useState({
